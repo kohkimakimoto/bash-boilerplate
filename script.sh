@@ -97,8 +97,8 @@ usage() {
     echo "Usage: $progname [OPTIONS] ${txtunderline}COMMAND${txtreset}"
     echo
     echo "Options:"
-    echo "  -h, --help       show help"
-    echo "  -v, --version    print the version"
+    echo "  -h, --help       show help."
+    echo "  -v, --version    print the version."
     echo
     echo "Commands:"
     echo "  help   print help."
