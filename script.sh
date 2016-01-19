@@ -46,8 +46,41 @@ abs_dirname() {
 # Usage:
 #   echo "message" | indent
 indent() {
+    indent4
+}
+
+indent2() {
+  # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
+  local c="${1:+"2,999"} s/^/  /"
+  case $(uname) in
+    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
+    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
+  esac
+}
+
+indent4() {
+  # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
+  local c="${1:+"2,999"} s/^/    /"
+  case $(uname) in
+    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
+    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
+  esac
+}
+
+indent6() {
   # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
   local c="${1:+"2,999"} s/^/      /"
+  case $(uname) in
+    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
+    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
+  esac
+}
+
+# Usage:
+#   echo "message" | indent
+prefix() {
+  local p="${1:-prefix}"
+  local c="s/^/$p/"
   case $(uname) in
     Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
     *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
@@ -92,7 +125,7 @@ hr() {
 
 # inspired by http://dharry.hatenablog.com/entry/20110122/1295681180
 # Usage:
-#   sleep 3 & progress
+#   sleep 3 & progress &&
 progress() {
   local _bar=$1; _bar=${_bar:=.}
   while :
@@ -105,7 +138,7 @@ progress() {
 }
 
 # Usage:
-#   sleep 3 & loading
+#   sleep 3 & loading &&
 loading() {
   local _ptn=0
   while :
@@ -161,17 +194,20 @@ usage() {
     echo "  -v, --version    print the version."
     echo
     echo "Commands:"
-    echo "  help   show help."
-    echo "  hello  say helloworld!"
+    echo "  help        show help."
+    echo "  hr          (example) print a horizontal line."
+    echo "  color       (example) coloring output."
+    echo "  confirm     (example) confirm."
+    echo "  ask         (example) ask."
+    echo "  progress    (example) progress."
+    echo "  loading     (example) loading."
+    echo "  indent      (example) indent."
+    echo "  prefix      (example) prefix."
     echo
 }
 
 printversion() {
     echo "${progversion}"
-}
-
-do_hello() {
-    echo "${txtyellow}helloworld!${txtreset}"
 }
 
 ##################################################
@@ -218,10 +254,52 @@ case $sub_command in
         usage
         exit 0
         ;;
-    'hello' )
-        do_hello
+    'hr' )
+        hr
         exit 0
         ;;
+    'color' )
+        echo "${txtred}red${txtreset}"
+        echo "${txtblue}blue${txtreset}"
+        echo "${txtgreen}green${txtreset}"
+        echo "${txtyellow}yellow${txtreset}"
+        echo "${txtunderline}underline${txtreset}"
+        echo "${txtbold}bold${txtreset}"
+        exit 0
+        ;;
+    'confirm' )
+        confirm
+        echo "You said YES!"
+        exit 0
+        ;;
+    'ask' )
+        _txt=$(ask "Please input your name:")
+        echo "Hello ${_txt}!"
+        exit 0
+        ;;
+    'progress' )
+        echo "execute 'sleep 3'. please wait 3 seconds."
+        sleep 3 & progress &&
+        echo "Done."
+        exit 0
+        ;;
+    'loading' )
+        echo "execute 'sleep 3'. please wait 3 seconds."
+        sleep 3 & loading &&
+        echo "Done."
+        exit 0
+        ;;
+    'indent' )
+        echo "indenting output of 'ls -la'."
+        ls -la | indent
+        exit 0
+        ;;
+    'prefix' )
+        echo "output of 'ls -la' with hostname prefix."
+        ls -la | prefix "${txtyellow}[$(hostname)]${txtreset} "
+        exit 0
+        ;;
+
     '' )
         usage
         exit 0
