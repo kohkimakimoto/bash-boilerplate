@@ -101,7 +101,7 @@ usage() {
     echo "  -v, --version    print the version."
     echo
     echo "Commands:"
-    echo "  help   print help."
+    echo "  help   show help."
     echo "  hello  say helloworld!"
     echo
 }
