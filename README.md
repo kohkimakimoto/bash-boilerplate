@@ -2,10 +2,6 @@
 
 Bash script boilerplate.
 
-```
-
-```
-
 ## Features
 
 * Support sub-command.
@@ -19,3 +15,25 @@ Bash script boilerplate.
 
 Many functionalities implemented in the script were inspired by the code at the Internet.
 Please see the comments in the code.
+
+There are some examples inside it. Please run `script.sh`. You can get like the following message.
+
+```
+$ ./script.sh
+Usage: script.sh [OPTIONS] COMMAND
+
+Options:
+  -h, --help       show help.
+  -v, --version    print the version.
+
+Commands:
+  help        show help.
+  hr          (example) print a horizontal line.
+  color       (example) coloring output.
+  confirm     (example) confirm.
+  ask         (example) ask.
+  progress    (example) progress.
+  loading     (example) loading.
+  indent      (example) indent.
+  prefix      (example) prefix.
+```
