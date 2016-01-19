@@ -88,7 +88,7 @@ txtreset=$(tput sgr0)            # Reset
 # set useful variables
 script_dir="$(abs_dirname "$0")"
 progname=$(basename $0)
-
+progversion="0.1.0"
 
 ##################################################
 # Actions.
@@ -96,13 +96,18 @@ progname=$(basename $0)
 usage() {
     echo "Usage: $progname [OPTIONS] ${txtunderline}COMMAND${txtreset}"
     echo
-    echo "Commands:"
-    echo "  help   prints help."
-    echo "  hello  says helloworld!"
-    echo
     echo "Options:"
-    echo "  -h, --help"
+    echo "  -h, --help       show help"
+    echo "  -v, --version    print the version"
     echo
+    echo "Commands:"
+    echo "  help   print help."
+    echo "  hello  say helloworld!"
+    echo
+}
+
+printversion() {
+    echo "${progversion}"
 }
 
 do_hello() {
@@ -123,7 +128,11 @@ do
     case "$OPT" in
         '-h'|'--help' )
             usage
-            exit 1
+            exit 0
+            ;;
+        '-v'|'--version' )
+            printversion
+            exit 0
             ;;
         '--'|'-' )
             shift 1
@@ -147,7 +156,7 @@ sub_command=${params[0]}
 case $sub_command in
     'help' )
         usage
-        exit 1
+        exit 0
         ;;
     'hello' )
         do_hello
@@ -155,7 +164,7 @@ case $sub_command in
         ;;
     '' )
         usage
-        exit 1
+        exit 0
         ;;
     *)
         echo "$progname: illegal command '$sub_command'" 1>&2
