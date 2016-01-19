@@ -2,6 +2,11 @@
 
 #
 # bash boilerplate.
+# You should edit it for your purpose.
+#
+# my command memo:
+#   run using curl:
+#     $ curl -sL https://raw.githubusercontent.com/kohkimakimoto/bash-boilerplate/master/script.sh | bash -s -- --help
 #
 
 ##################################################
