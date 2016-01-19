@@ -26,7 +26,9 @@ abs_dirname() {
   local path="$1"
 
   while [ -n "$path" ]; do
-    cd "${path%/*}"
+    # cd "${path%/*}" does not work in "$ bash script.sh"
+    # cd "${path%/*}"
+    dirname $path
     local name="${path##*/}"
     path="$(resolve_link "$name" || true)"
   done
@@ -136,7 +138,9 @@ txtyellow=$(tput setaf 3)        # yellow
 txtblue=$(tput setaf 4)          # blue
 txtreset=$(tput sgr0)            # Reset
 
+##################################################
 # set useful variables
+##################################################
 script_dir="$(abs_dirname "$0")"
 progname=$(basename $0)
 progversion="0.1.0"
