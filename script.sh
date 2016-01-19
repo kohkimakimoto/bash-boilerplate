@@ -36,6 +36,8 @@ abs_dirname() {
 }
 
 # inspired by https://github.com/heroku/heroku-buildpack-php
+# Usage:
+#   echo "message" | indent
 indent() {
   # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
   c="${1:+"2,999"} s/^/      /"
@@ -72,9 +74,8 @@ ask() {
 # bold and color text utility
 # https://linuxtidbits.wordpress.com/2008/08/11/output-color-on-bash-scripts/
 # http://stackoverflow.com/questions/2924697/how-does-one-output-bold-text-in-bash
-#
-# usage: ${txtred}foobar${txtreset}
-#
+# usage:
+#   ${txtred}foobar${txtreset}
 txtunderline=$(tput sgr 0 1)     # Underline
 txtbold=$(tput bold)             # Bold
 
@@ -84,7 +85,7 @@ txtyellow=$(tput setaf 3)        # yellow
 txtblue=$(tput setaf 4)          # blue
 txtreset=$(tput sgr0)            # Reset
 
-# set variables
+# set useful variables
 script_dir="$(abs_dirname "$0")"
 progname=$(basename $0)
 
@@ -97,7 +98,7 @@ usage() {
     echo
     echo "Commands:"
     echo "  help   prints help."
-    echo "  hello  says helloworld!."
+    echo "  hello  says helloworld!"
     echo
     echo "Options:"
     echo "  -h, --help"
