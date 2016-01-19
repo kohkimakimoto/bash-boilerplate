@@ -40,7 +40,7 @@ abs_dirname() {
 #   echo "message" | indent
 indent() {
   # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
-  c="${1:+"2,999"} s/^/      /"
+  local c="${1:+"2,999"} s/^/      /"
   case $(uname) in
     Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
     *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
@@ -51,6 +51,7 @@ indent() {
 # Usage:
 #   confirm "message"
 confirm() {
+    local response
     # call with a prompt string or use a default
     read -r -p "${1:-Are you sure? [y/N]:} " response
     case $response in
@@ -66,9 +67,59 @@ confirm() {
 # Usage:
 #   var=$(ask "message")
 ask() {
+    local response
     # call with a prompt string or use a default
     read -r -p "${1:->} " response
     echo $response
+}
+
+# write a horizontal line
+# http://wiki.bash-hackers.org/snipplets/print_horizontal_line
+# Usage:
+#   hr
+#   hr "="
+#   hr "=" 10
+hr() {
+    printf '%*s\n' "${2:-$(tput cols)}" '' | tr ' ' "${1:--}"
+}
+
+# inspired by http://dharry.hatenablog.com/entry/20110122/1295681180
+# Usage:
+#   sleep 3 & progress
+progress() {
+  local _bar=$1; _bar=${_bar:=.}
+  while :
+  do
+    jobs %1 > /dev/null 2>&1
+    [ $? = 0 ] || break
+    echo -n ${_bar}
+    sleep 0.2
+  done;
+}
+
+# Usage:
+#   sleep 3 & loading
+loading() {
+  local _ptn=0
+  while :
+  do
+    jobs %1 > /dev/null 2>&1
+    [ $? = 0 ] || break
+    if [ ${_ptn} -eq 0 ]; then
+        _ptn=1
+        echo -ne '-\r'
+    elif [ ${_ptn} -eq 1 ]; then
+        _ptn=2
+        echo -ne '\\\r'
+    elif [ ${_ptn} -eq 2 ]; then
+        _ptn=3
+        echo -ne '|\r'
+    else
+        _ptn=0
+        echo -ne '/\r'
+    fi
+    sleep 0.1
+  done;
 }
 
 # bold and color text utility
