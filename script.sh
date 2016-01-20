@@ -164,6 +164,16 @@ loading2() {
     return 1
 }
 
+# https://github.com/rbenv/rbenv
+# Usage: abort "error message"
+abort() {
+  { if [ "$#" -eq 0 ]; then cat -
+    else echo "${txtred}${progname}: $*${txtreset}"
+    fi
+  } >&2
+  exit 1
+}
+
 # bold and color text utility
 # https://linuxtidbits.wordpress.com/2008/08/11/output-color-on-bash-scripts/
 # http://stackoverflow.com/questions/2924697/how-does-one-output-bold-text-in-bash
