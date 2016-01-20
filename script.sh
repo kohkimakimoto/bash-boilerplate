@@ -13,8 +13,6 @@
 # General functions, initializing and etc..
 # You probably should not edit this section.
 ##################################################
-set -e
-
 READLINK=$(type -p greadlink readlink | head -1)
 if [ -z "$READLINK" ]; then
   echo "cannot find readlink - are you missing GNU coreutils?" >&2
@@ -96,10 +94,10 @@ confirm() {
     read -r -p "${1:-Are you sure? [y/N]:} " response
     case $response in
         [yY][eE][sS]|[yY])
-            true
+            return 0
             ;;
         *)
-            false
+            return 1
             ;;
     esac
 }
@@ -127,11 +125,12 @@ hr() {
 # Usage:
 #   sleep 3 & progress &&
 progress() {
-  local _bar=$1; _bar=${_bar:=.}
+  local _bar="${1:-.}"
   while :
   do
-    jobs %1 > /dev/null 2>&1
-    [ $? = 0 ] || break
+    # about "&&:" http://qiita.com/ngyuki/items/aefd47700a9522fada75
+    jobs %1 > /dev/null 2>&1 &&:
+    [ $? -eq 0 ] || break
     echo -n ${_bar}
     sleep 0.2
   done;
@@ -143,8 +142,8 @@ loading() {
   local _ptn=0
   while :
   do
-    jobs %1 > /dev/null 2>&1
-    [ $? = 0 ] || break
+    jobs %1 > /dev/null 2>&1 &&:
+    [ $? -eq 0 ] || break
     if [ ${_ptn} -eq 0 ]; then
         _ptn=1
         echo -ne '-\r'
@@ -160,6 +159,10 @@ loading() {
     fi
     sleep 0.1
   done;
+}
+
+loading2() {
+    return 1
 }
 
 # bold and color text utility
@@ -179,6 +182,7 @@ txtreset=$(tput sgr0)            # Reset
 ##################################################
 # set useful variables
 ##################################################
+set -eu
 script_dir="$(abs_dirname "$0")"
 progname=$(basename $0)
 progversion="0.1.0"
@@ -248,7 +252,7 @@ do
     esac
 done
 
-sub_command=${params[0]}
+sub_command="" && [ ${#params[@]} -ne 0 ] && sub_command=${params[0]}
 case $sub_command in
     'help' )
         usage
