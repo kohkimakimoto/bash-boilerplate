@@ -14,7 +14,7 @@ Bash script boilerplate.
 * Outputting text with prefix string.
 
 Many functionalities implemented in the script were inspired by the code at the Internet.
-Please see the comments in the code.
+Please see the comments in the script code.
 
 There are some examples inside it. Please run `script.sh`. You can get like the following message.
 
