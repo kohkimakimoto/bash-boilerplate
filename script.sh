@@ -122,7 +122,7 @@ hr() {
 
 # inspired by http://dharry.hatenablog.com/entry/20110122/1295681180
 # Usage:
-#   sleep 3 & progress &&
+#   sleep 3 & progress
 progress() {
   local _bar="${1:-.}"
   while :
@@ -136,7 +136,7 @@ progress() {
 }
 
 # Usage:
-#   sleep 3 & loading &&
+#   sleep 3 & loading
 loading() {
   local _ptn=0
   while :
@@ -282,13 +282,13 @@ case $sub_command in
         ;;
     'progress' )
         echo "execute 'sleep 3'. please wait 3 seconds."
-        sleep 3 & progress &&
+        sleep 3 & progress
         echo "Done."
         exit 0
         ;;
     'loading' )
         echo "execute 'sleep 3'. please wait 3 seconds."
-        sleep 3 & loading &&
+        sleep 3 & loading
         echo "Done."
         exit 0
         ;;
