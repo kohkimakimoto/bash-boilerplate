@@ -261,8 +261,8 @@ do
     esac
 done
 
-sub_command="" && [ ${#params[@]} -ne 0 ] && sub_command=${params[0]}
-case $sub_command in
+command="" && [ ${#params[@]} -ne 0 ] && command=${params[0]}
+case $command in
     'help' )
         usage
         exit 0
@@ -312,13 +312,12 @@ case $sub_command in
         ls -la | prefix "${txtyellow}[$(hostname)]${txtreset} "
         exit 0
         ;;
-
     '' )
         usage
         exit 0
         ;;
     *)
-        echo "$progname: illegal command '$sub_command'" 1>&2
+        echo "$progname: illegal command '$command'" 1>&2
         exit 1
         ;;
 esac
