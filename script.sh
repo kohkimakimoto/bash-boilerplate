@@ -144,8 +144,11 @@ loading() {
   done;
 }
 
-loading2() {
-    return 1
+# Usage:
+#   upper "abcdefg"
+#   $(upper "abcdefg")
+upper() {
+    echo -n "$1" | tr '[a-z]' '[A-Z]'
 }
 
 # https://github.com/rbenv/rbenv
