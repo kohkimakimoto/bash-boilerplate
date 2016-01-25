@@ -41,40 +41,7 @@ abs_dirname() {
 
 # inspired by https://github.com/heroku/heroku-buildpack-php
 # Usage:
-#   echo "message" | indent
-indent() {
-    indent4
-}
-
-indent2() {
-  # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
-  local c="${1:+"2,999"} s/^/  /"
-  case $(uname) in
-    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
-    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
-  esac
-}
-
-indent4() {
-  # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
-  local c="${1:+"2,999"} s/^/    /"
-  case $(uname) in
-    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
-    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
-  esac
-}
-
-indent6() {
-  # if an arg is given it's a flag indicating we shouldn't indent the first line, so use :+ to tell SED accordingly if that parameter is set, otherwise null string for no range selector prefix (it selects from line 2 onwards and then every 1st line, meaning all lines)
-  local c="${1:+"2,999"} s/^/      /"
-  case $(uname) in
-    Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
-    *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
-  esac
-}
-
-# Usage:
-#   echo "message" | indent
+#   echo "message" | prefix "hoge"
 prefix() {
   local p="${1:-prefix}"
   local c="s/^/$p/"
@@ -82,6 +49,23 @@ prefix() {
     Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
     *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
   esac
+}
+
+# inspired by https://github.com/heroku/heroku-buildpack-php
+# Usage:
+#   echo "message" | indent 4
+indent() {
+    local n="${1:-4}"
+    local p=""
+    for i in `seq 1 $n`; do
+        p="$p "
+    done;
+
+    local c="s/^/$p/"
+    case $(uname) in
+      Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
+      *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data
+    esac
 }
 
 # inspired by http://stackoverflow.com/questions/3231804/in-bash-how-to-add-are-you-sure-y-n-to-any-command-or-alias
