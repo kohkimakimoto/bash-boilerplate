@@ -30,7 +30,7 @@ abs_dirname() {
   while [ -n "$path" ]; do
     # cd "${path%/*}" does not work in "$ bash script.sh"
     # cd "${path%/*}"
-    dirname $path
+    cd "$(dirname $path)"
     local name="${path##*/}"
     path="$(resolve_link "$name" || true)"
   done
