@@ -23,8 +23,9 @@ $ ./script.sh
 Usage: script.sh [OPTIONS] COMMAND
 
 Options:
-  -h, --help       show help.
-  -v, --version    print the version.
+  -h, --help         show help.
+  -v, --version      print the version.
+  -d, --dir <DIR>    change working directory.
 
 Commands:
   help        show help.
@@ -36,4 +37,11 @@ Commands:
   loading     (example) loading.
   indent      (example) indent.
   prefix      (example) prefix.
+
+```
+
+You can run it the following command.
+
+```
+$ curl -sL https://raw.githubusercontent.com/kohkimakimoto/bash-boilerplate/master/script.sh | bash -s -- --help
 ```

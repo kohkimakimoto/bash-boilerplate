@@ -190,8 +190,9 @@ usage() {
     echo "Usage: $progname [OPTIONS] ${txtunderline}COMMAND${txtreset}"
     echo
     echo "Options:"
-    echo "  -h, --help       show help."
-    echo "  -v, --version    print the version."
+    echo "  -h, --help         show help."
+    echo "  -v, --version      print the version."
+    echo "  -d, --dir <DIR>    change working directory."
     echo
     echo "Commands:"
     echo "  help        show help."
@@ -230,6 +231,17 @@ do
             printversion
             exit 0
             ;;
+        '-d'|'--dir' )
+            if [[ -z "${2:-}" ]] || [[ "${2:-}" =~ ^-+ ]]; then
+                echo "$progname: option '$1' requires an argument." 1>&2
+                exit 1
+            fi
+            optarg="$2"
+
+            cd $optarg
+            shift 2
+
+            ;;
         '--'|'-' )
             shift 1
             params+=( "$@" )
@@ -240,7 +252,7 @@ do
             exit 1
             ;;
         *)
-            if [[ ! -z "$1" ]] && [[ ! "$1" =~ ^-+ ]]; then
+            if [[ ! -z "${1:-}" ]] && [[ ! "${1:-}" =~ ^-+ ]]; then
                 params+=( "$1" )
                 shift 1
             fi
