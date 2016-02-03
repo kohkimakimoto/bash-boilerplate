@@ -166,14 +166,23 @@ abort() {
 # http://stackoverflow.com/questions/2924697/how-does-one-output-bold-text-in-bash
 # usage:
 #   ${txtred}foobar${txtreset}
-txtunderline=$(tput sgr 0 1)     # Underline
-txtbold=$(tput bold)             # Bold
-
-txtred=$(tput setaf 1)           # red
-txtgreen=$(tput setaf 2)         # green
-txtyellow=$(tput setaf 3)        # yellow
-txtblue=$(tput setaf 4)          # blue
-txtreset=$(tput sgr0)            # Reset
+if [ "${TERM:-dumb}" != "dumb" ]; then
+    txtunderline=$(tput sgr 0 1)     # Underline
+    txtbold=$(tput bold)             # Bold
+    txtred=$(tput setaf 1)           # red
+    txtgreen=$(tput setaf 2)         # green
+    txtyellow=$(tput setaf 3)        # yellow
+    txtblue=$(tput setaf 4)          # blue
+    txtreset=$(tput sgr0)            # Reset
+else
+    txtunderline=""
+    txtbold=""
+    txtred=""
+    txtgreen=""
+    txtyellow=""
+    txtblue=$""
+    txtreset=""
+fi
 
 ##################################################
 # set useful variables
